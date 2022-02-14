@@ -1,0 +1,30 @@
+{
+  "class" : "org.batfish.question.ospfproperties.OspfPropertiesQuestion",
+  "nodes" : ".*",
+  "properties" : "maximum-.*",
+  "differential" : false,
+  "includeOneTableKeys" : true,
+  "instance" : {
+    "description" : "Return configuration parameters for OSPF routing processes",
+    "instanceName" : "qname",
+    "tags" : [
+      "ospf"
+    ],
+    "variables" : {
+      "nodes" : {
+        "description" : "Include nodes matching this name or regex",
+        "displayName" : "Nodes",
+        "optional" : true,
+        "type" : "nodeSpec",
+        "value" : ".*"
+      },
+      "properties" : {
+        "description" : "Include properties matching this regex",
+        "displayName" : "Properties",
+        "optional" : true,
+        "type" : "ospfPropertySpec",
+        "value" : "maximum-.*"
+      }
+    }
+  }
+}

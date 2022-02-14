@@ -1,0 +1,47 @@
+{
+  "class" : "org.batfish.question.interfaceproperties.InterfacePropertiesQuestion",
+  "excludeShutInterfaces" : false,
+  "interfaces" : ".*",
+  "nodes" : ".*",
+  "properties" : ".*",
+  "differential" : false,
+  "includeOneTableKeys" : true,
+  "instance" : {
+    "description" : "Returns configuration properties of interfaces",
+    "instanceName" : "qname",
+    "tags" : [
+      "configuration",
+      "interfaces"
+    ],
+    "variables" : {
+      "excludeShutInterfaces" : {
+        "description" : "Exclude interfaces that are shutdown",
+        "displayName" : "Exclude Shut Interfaces",
+        "optional" : true,
+        "type" : "boolean",
+        "value" : false
+      },
+      "interfaces" : {
+        "description" : "Include interfaces matching this regex",
+        "displayName" : "Interfaces",
+        "optional" : true,
+        "type" : "javaRegex",
+        "value" : ".*"
+      },
+      "nodes" : {
+        "description" : "Include nodes matching this name or regex",
+        "displayName" : "Nodes",
+        "optional" : true,
+        "type" : "nodeSpec",
+        "value" : ".*"
+      },
+      "properties" : {
+        "description" : "Include properties matching this regex",
+        "displayName" : "Properties",
+        "optional" : true,
+        "type" : "interfacePropertySpec",
+        "value" : ".*"
+      }
+    }
+  }
+}

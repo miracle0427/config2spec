@@ -1,0 +1,75 @@
+{
+  "class" : "org.batfish.question.edges.EdgesQuestion",
+  "edgeType" : "BGP",
+  "nodes" : ".*",
+  "remoteNodes" : ".*",
+  "differential" : false,
+  "includeOneTableKeys" : true,
+  "instance" : {
+    "description" : "Lists different types of edges in a snapshot",
+    "instanceName" : "qname",
+    "longDescription" : "Lists neighbor relationships of the specified type (layer3, BGP, ospf, etc. in the form of edges)",
+    "tags" : [
+      "topology"
+    ],
+    "variables" : {
+      "edgeType" : {
+        "allowedValues" : [
+          "bgp",
+          "eigrp",
+          "isis",
+          "layer1",
+          "layer2",
+          "layer3",
+          "ospf",
+          "rip"
+        ],
+        "description" : "Types of edges to include",
+        "displayName" : "Edge Type",
+        "optional" : true,
+        "type" : "string",
+        "value" : "bgp",
+        "values" : [
+          {
+            "name" : "bgp"
+          },
+          {
+            "name" : "eigrp"
+          },
+          {
+            "name" : "isis"
+          },
+          {
+            "name" : "layer1"
+          },
+          {
+            "name" : "layer2"
+          },
+          {
+            "name" : "layer3"
+          },
+          {
+            "name" : "ospf"
+          },
+          {
+            "name" : "rip"
+          }
+        ]
+      },
+      "nodes" : {
+        "description" : "Include edges whose first node matches this name or regex",
+        "displayName" : "Nodes",
+        "optional" : false,
+        "type" : "nodeSpec",
+        "value" : ".*"
+      },
+      "remoteNodes" : {
+        "description" : "Include edges whose second node matches this name or regex",
+        "displayName" : "Remote Nodes",
+        "optional" : false,
+        "type" : "nodeSpec",
+        "value" : ".*"
+      }
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "class" : "org.batfish.question.ipowners.IpOwnersQuestion",
+  "duplicatesOnly" : false,
+  "differential" : false,
+  "includeOneTableKeys" : true,
+  "instance" : {
+    "description" : "Returns the mapping of IP address, interface, node and VRF for all devices in the snapshot",
+    "instanceName" : "qname",
+    "tags" : [
+      "configuration",
+      "ip"
+    ],
+    "variables" : {
+      "duplicatesOnly" : {
+        "description" : "Restrict output to only IP addresses that are duplicated (configured on a different node or VRF) in the snapshot",
+        "displayName" : "Duplicates Only",
+        "optional" : false,
+        "type" : "boolean",
+        "value" : false
+      }
+    }
+  }
+}

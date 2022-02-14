@@ -1,0 +1,31 @@
+{
+  "class" : "org.batfish.question.bgpproperties.BgpProcessConfigurationQuestion",
+  "nodes" : ".*",
+  "properties" : "multipath-.*",
+  "differential" : false,
+  "includeOneTableKeys" : true,
+  "instance" : {
+    "description" : "Return BGP process configuration properties",
+    "instanceName" : "qname",
+    "tags" : [
+      "bgp",
+      "configuration"
+    ],
+    "variables" : {
+      "nodes" : {
+        "description" : "Include nodes matching this name or regex",
+        "displayName" : "Nodes",
+        "optional" : true,
+        "type" : "nodeSpec",
+        "value" : ".*"
+      },
+      "properties" : {
+        "description" : "Include properties matching this regex",
+        "displayName" : "Properties",
+        "optional" : true,
+        "type" : "bgpProcessPropertySpec",
+        "value" : "multipath-.*"
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "class" : "org.batfish.question.loop.DetectLoopsQuestion",
+  "maxTraces" : 0,
+  "differential" : false,
+  "includeOneTableKeys" : true,
+  "instance" : {
+    "description" : "Detect forwarding loops.",
+    "instanceName" : "qname",
+    "longDescription" : "Finds forwarding loops",
+    "tags" : [
+      "dataPlane",
+      "loop",
+      "reachability"
+    ],
+    "variables" : {
+      "maxTraces" : {
+        "description" : "Limit the number of traces returned",
+        "displayName" : "Max Traces",
+        "optional" : true,
+        "type" : "integer",
+        "value" : 0
+      }
+    }
+  }
+}

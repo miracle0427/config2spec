@@ -1,0 +1,99 @@
+{
+  "class" : "org.batfish.question.testfilters.TestFiltersQuestion",
+  "filters" : ".*",
+  "headers" : {
+    "srcIps" : "1.1.1.1/32"
+  },
+  "nodes" : ".*",
+  "startLocation" : "node1",
+  "differential" : false,
+  "includeOneTableKeys" : true,
+  "instance" : {
+    "description" : "Evaluate the processing of a flow by a given filter/ACL",
+    "instanceName" : "qname",
+    "longDescription" : "Find how the specified flow is processed through the specified filters/ACLs.",
+    "tags" : [
+      "dataPlane",
+      "filter",
+      "flow",
+      "trace"
+    ],
+    "variables" : {
+      "filters" : {
+        "description" : "Only consider filters that match this regular expression",
+        "displayName" : "Filters",
+        "optional" : false,
+        "type" : "javaRegex",
+        "value" : ".*"
+      },
+      "headers" : {
+        "description" : "Packet header constraints",
+        "displayName" : "Headers",
+        "fields" : {
+          "applications" : {
+            "optional" : true
+          },
+          "dscps" : {
+            "optional" : true
+          },
+          "dstIps" : {
+            "optional" : false
+          },
+          "dstPorts" : {
+            "optional" : true
+          },
+          "ecns" : {
+            "optional" : true
+          },
+          "flowStates" : {
+            "optional" : true
+          },
+          "fragmentOffsets" : {
+            "optional" : true
+          },
+          "icmpCodes" : {
+            "optional" : true
+          },
+          "icmpTypes" : {
+            "optional" : true
+          },
+          "ipProtocols" : {
+            "optional" : true
+          },
+          "packetLengths" : {
+            "optional" : true
+          },
+          "srcIps" : {
+            "optional" : true
+          },
+          "srcPorts" : {
+            "optional" : true
+          },
+          "tcpFlags" : {
+            "optional" : true
+          }
+        },
+        "optional" : false,
+        "type" : "headerConstraint",
+        "value" : {
+          "srcIps" : "1.1.1.1/32"
+        }
+      },
+      "nodes" : {
+        "description" : "Only examine filters on nodes matching this name or regex",
+        "displayName" : "Nodes",
+        "optional" : false,
+        "type" : "nodeSpec",
+        "value" : ".*"
+      },
+      "startLocation" : {
+        "description" : "Location to start tracing from",
+        "displayName" : "Start Location",
+        "minLength" : 1,
+        "optional" : true,
+        "type" : "string",
+        "value" : "node1"
+      }
+    }
+  }
+}
