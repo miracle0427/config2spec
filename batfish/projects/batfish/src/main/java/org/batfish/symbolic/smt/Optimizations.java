@@ -262,7 +262,7 @@ class Optimizations {
               if (conf.getDefaultVrf().getBgpProcess() != null && _encoderSlice.isMainSlice()) {
                 protos.add(Protocol.BGP);
               }
-              if (needToModelConnected(conf)) {
+              if (true/*needToModelConnected(conf)*/) {
                 protos.add(Protocol.CONNECTED);
               }
               if (needToModelStatic(conf)) {
@@ -285,11 +285,11 @@ class Optimizations {
    * overlaps with the destination IP of interest in the packet.
    */
   private boolean needToModelStatic(Configuration conf) {
-    if (Optimizations.ENABLE_SLICING_OPTIMIZATION) {
+    /*if (Optimizations.ENABLE_SLICING_OPTIMIZATION) {
       return hasRelevantOriginatedRoute(conf, Protocol.STATIC);
-    } else {
-      return !conf.getDefaultVrf().getStaticRoutes().isEmpty();
-    }
+    } else {*/
+    return !conf.getDefaultVrf().getStaticRoutes().isEmpty();
+    /*}*/
   }
 
   /*

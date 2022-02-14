@@ -60,7 +60,7 @@ class EncoderSlice {
 
   private String _sliceName;
 
-  private HeaderSpace _headerSpace;
+  public HeaderSpace _headerSpace;
 
   private Optimizations _optimizations;
 
@@ -692,7 +692,7 @@ class EncoderSlice {
 
               boolean doModel = !(proto.isConnected() && !relevantPrefix(p));
               // PolicyQuotient: Don't model the connected interfaces that aren't relevant
-              if (doModel) {
+              if (/*doModel*/true) {
                 if (notNeeded) {
                   String name =
                       String.format(
@@ -2285,7 +2285,7 @@ class EncoderSlice {
    * Add constraints for the type of packets we will consider in the model.
    * This can include restrictions on any packet field such as dstIp, protocol etc.
    */
-  private void addHeaderSpaceConstraint() {
+  public void addHeaderSpaceConstraint() {
     Context ctx = _encoder.getCtx();
     add(
         new IpAccessListToBoolExpr(ctx, _symbolicPacket)
@@ -2323,7 +2323,7 @@ class EncoderSlice {
     addControlForwardingConstraints();
     addDataForwardingConstraints();
     addUnusedDefaultValueConstraints();
-    addHeaderSpaceConstraint();
+//    addHeaderSpaceConstraint();
     if (isMainSlice()) {
       addEnvironmentConstraints();
     }
