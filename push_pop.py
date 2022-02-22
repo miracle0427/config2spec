@@ -46,6 +46,7 @@ def method():
         print('No')
     total = time.time() - start
     print(total)
+    os.killpg(process.pid, signal.SIGKILL)
 
 if __name__ == '__main__':
     method()
