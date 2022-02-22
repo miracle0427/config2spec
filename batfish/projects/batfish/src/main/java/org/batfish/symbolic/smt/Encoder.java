@@ -87,6 +87,7 @@ public class Encoder {
 
   private Settings _settings;
 
+  public BoolExpr condition;
   /**
    * Create an encoder object that will consider all packets in the provided headerspace.
    *
@@ -190,6 +191,7 @@ public class Encoder {
     }
 
     _unsatCore = new UnsatCore(ENABLE_UNSAT_CORE);
+    condition = _ctx.mkBoolConst("condition");
 
     initFailedLinkVariables();
     initFailedNodeVariables();

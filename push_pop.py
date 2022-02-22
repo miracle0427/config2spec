@@ -18,7 +18,7 @@ def method():
     # step 2: init minesweeper
     base_url = '%s:%d' % ("http://localhost", port)
 
-    data = 'BasePath:/tmp;ConfigPath:/home/miracle/config2spec/scenarios/bics/ospf/configs;ConfigFiles:Zurich.cfg,Ljubjana.cfg,Bucharest.cfg,Bratislava.cfg,Vienna.cfg,Kiev.cfg,Basel.cfg,Istanbul.cfg,London.cfg,Rotterdam.cfg,Madrid.cfg,Marseille.cfg,Frankfurt.cfg,Praha.cfg,Budapest.cfg,Warsaw.cfg,Lyon.cfg,Stockholm.cfg,Strasbourg.cfg,Geneva.cfg,Athens.cfg,Paris.cfg,Dublin.cfg,Lisbon.cfg,Milan.cfg,Barcelona.cfg,Brussels.cfg,Zagreb.cfg,Amsterdam.cfg,Vaduz.cfg,Roma.cfg,Luxembourg.cfg,Sofia.cfg'
+    data = 'BasePath:/tmp;ConfigPath:/home/miracle/config2spec/scenarios/test/configs;ConfigFiles:A,B'
     # data = 'BasePath:/tmp;ConfigPath:/home/miracle/config2spec/scenarios/bics/bgp/configs;ConfigFiles:PeerAmsterdam_0.cfg,PeerBasel_3.cfg,Zurich.cfg,Ljubjana.cfg,PeerBrussels_5.cfg,PeerFrankfurt_7.cfg,Bucharest.cfg,PeerBrussels_4.cfg,Bratislava.cfg,Vienna.cfg,Kiev.cfg,Basel.cfg,Istanbul.cfg,London.cfg,PeerGeneva_8.cfg,PeerBarcelona_1.cfg,Rotterdam.cfg,Madrid.cfg,Marseille.cfg,Frankfurt.cfg,Praha.cfg,Budapest.cfg,Warsaw.cfg,Lyon.cfg,Stockholm.cfg,PeerIstanbul_10.cfg,PeerGeneva_9.cfg,PeerKiev_11.cfg,PeerStrasbourg_15.cfg,Strasbourg.cfg,Geneva.cfg,Athens.cfg,Paris.cfg,Dublin.cfg,Lisbon.cfg,Milan.cfg,Barcelona.cfg,Brussels.cfg,PeerMarseille_12.cfg,Zagreb.cfg,Amsterdam.cfg,Vaduz.cfg,Roma.cfg,PeerMilan_14.cfg,PeerBrussels_6.cfg,PeerMarseille_13.cfg,Luxembourg.cfg,PeerBasel_2.cfg,Sofia.cfg'
     response = requests.post(
         url='{base_url}/{attribute}'.format(base_url=base_url, attribute='init_minesweeper'),
@@ -26,7 +26,7 @@ def method():
     response_content = response.content.decode('utf-8')
 
     # step 3: run query
-    query = 'Type:reachability;IngressNodeRegex:^amsterdam$|^zagreb$|^bucharest$|^lisbon$|^rotterdam$|^zurich$|^sofia$|^kiev$|^stockholm$|^budapest$|^roma$|^praha$|^istanbul$|^madrid$|^vaduz$|^ljubjana$|^athens$|^dublin$|^paris$|^geneva$|^london$|^frankfurt$|^barcelona$|^basel$|^vienna$|^strasbourg$|^brussels$|^lyon$|^milan$|^luxembourg$|^bratislava$|^marseille$;FinalNodeRegex:warsaw;FinalIfaceRegex:FastEthernet0/0;Negate:False;MaxFailures:0;Environment:;'
+    query = 'Type:reachability;IngressNodeRegex:^a$;FinalNodeRegex:b;FinalIfaceRegex:Loopback0;Negate:False;MaxFailures:0;Environment:;'
     start = time.time()
     response = requests.post(url='{base_url}/{attribute}'.format(base_url=base_url, attribute='run_query'),
                              data=query.strip())

@@ -292,7 +292,7 @@ class EncoderSlice {
 
           BoolExpr inAcl = getCtx().mkBoolConst(inName);
           BoolExpr inAclFunc = computeACL(inbound);
-          add(mkEq(inAcl, inAclFunc));
+          add(mkImplies(_encoder.condition ,mkEq(inAcl, inAclFunc)));
           _inboundAcls.put(ge, inAcl);
         }
       }
@@ -314,6 +314,7 @@ class EncoderSlice {
               } else {
                 GraphEdge ge = getGraph().getOtherEnd().get(edge);
                 inAcl = _inboundAcls.get(ge);
+                inAcl = mkOr(inAcl, mkNot(_encoder.condition));
                 if (inAcl == null) {
                   inAcl = mkTrue();
                 }
@@ -2324,6 +2325,7 @@ class EncoderSlice {
     addDataForwardingConstraints();
     addUnusedDefaultValueConstraints();
     addHeaderSpaceConstraint();
+    _encoder.getSolver().add(mkEq(_encoder.condition, mkFalse()));
     if (isMainSlice()) {
       addEnvironmentConstraints();
     }
