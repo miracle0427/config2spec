@@ -26,18 +26,19 @@ def method():
     response_content = response.content.decode('utf-8')
 
     # step 3: run query
-    query = 'Type:reachability;IngressNodeRegex:^a$;FinalNodeRegex:b;FinalIfaceRegex:Loopback0;Negate:False;MaxFailures:0;Environment:;'
     start = time.time()
+    query = 'Type:reachability;IngressNodeRegex:^a$;FinalNodeRegex:b;FinalIfaceRegex:Loopback0;Negate:False;MaxFailures:0;Environment:;'
     response = requests.post(url='{base_url}/{attribute}'.format(base_url=base_url, attribute='run_query'),
                              data=query.strip())
-    total = time.time() - start
-    print(total)
 
     response_content = response.content.decode('utf-8')
     if 'Verified' == response_content.strip():
         print('Verified')
     else:
         print('No')
+    total = time.time() - start
+    print(total)
+    os.killpg(os.getpgid(process.pid), signal.SIGKILL)
 
 
 if __name__ == '__main__':

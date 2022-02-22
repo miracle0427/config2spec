@@ -764,10 +764,10 @@ public class Encoder {
     // RB Added
     // System.out.println(_solver);
 
-    long start = System.currentTimeMillis();
+    long start = System.nanoTime();
     Status status = _solver.check();
-    long time = System.currentTimeMillis() - start;
-    // System.out.println("VERIFY: It took " + (time) + ".");
+    long time = System.nanoTime() - start;
+     System.out.println("VERIFY: It took " + (time) + ".");
 
     VerificationStats stats = null;
     if (_question.getBenchmark()) {
