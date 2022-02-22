@@ -527,6 +527,7 @@ public class PropertyChecker {
                           enc.getSolver().push();
 
                           //-----------other constraints------------------
+                          enc.getSolver().add(enc.mkEq(enc.condition, enc.mkTrue()));
                           enc.getMainSlice().addHeaderSpaceConstraint();
                           // Add environment constraints for base case
                           if (question.getDiffType() != null) {
@@ -721,6 +722,7 @@ public class PropertyChecker {
                           //-----------other constraints------------------
                           enc.getSolver().pop();
                           enc.getSolver().push();
+                          enc.getSolver().add(enc.mkEq(enc.condition, enc.mkFalse()));
                           enc.getMainSlice()._headerSpace = slice.getHeaderSpace();
                           enc.getMainSlice().addHeaderSpaceConstraint();
                           // Add environment constraints for base case
