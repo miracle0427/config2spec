@@ -513,6 +513,7 @@ public class PropertyChecker {
                 Encoder enc = new Encoder(_settings, g, question);
                 enc.computeEncoding();
                 timeEncoding = System.currentTimeMillis() - timeEncoding;
+                System.out.println(timeEncoding);
 
                 // Add environment constraints for base case
                 if (question.getDiffType() != null) {

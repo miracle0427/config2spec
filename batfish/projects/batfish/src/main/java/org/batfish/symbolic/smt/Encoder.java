@@ -765,7 +765,7 @@ public class Encoder {
     long start = System.currentTimeMillis();
     Status status = _solver.check();
     long time = System.currentTimeMillis() - start;
-    // System.out.println("VERIFY: It took " + (time) + ".");
+     System.out.println("VERIFY: It took " + (time) + ".");
 
     VerificationStats stats = null;
     if (_question.getBenchmark()) {

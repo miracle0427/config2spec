@@ -545,7 +545,7 @@ class TransferSSA {
       }
     } else if (expr instanceof MatchAsPath) {
       pCur.debug("MatchAsPath");
-      System.out.println("Warning: use of unimplemented feature MatchAsPath");
+//      System.out.println("Warning: use of unimplemented feature MatchAsPath");
       return fromExpr(_enc.mkFalse());
     }
 
@@ -1261,7 +1261,7 @@ class TransferSSA {
 
       } else if (stmt instanceof SetNextHop) {
         curP.debug("SetNextHop");
-        System.out.println("Warning: use of unimplemented feature SetNextHop");
+//        System.out.println("Warning: use of unimplemented feature SetNextHop");
 
       } else {
 

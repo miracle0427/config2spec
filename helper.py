@@ -313,7 +313,7 @@ class Pipeline(object):
                     self.logger.info("Switching back to dense elimination.")
                     dense = True
 
-                success = self.sample()
+                success = self.verify()
 
             # sparse elimination - once the time needed to eliminate a policy by sampling is the same or less than
             # by verification, we switch to sparse elimination. In this mode, we decide based on an estimate of the
@@ -331,7 +331,7 @@ class Pipeline(object):
                     if not sparse_sampling:
                         self.logger.info("Sparse: Switching to Sampling")
                         sparse_sampling = True
-                    success = self.sample()
+                    success = self.verify()
 
                 # switch to verification
                 else:

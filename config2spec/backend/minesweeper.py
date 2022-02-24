@@ -4,6 +4,7 @@
 import os
 import re
 import sys
+import time
 import requests
 
 from config2spec.backend.response import Response
@@ -71,7 +72,14 @@ class MinesweeperBackend(object):
         self.logger.debug("Batfish Commands:\n{query}".format(query=query))
 
         encoded_query = query.to_string_representation()
+        print(encoded_query)
+        start = time.time()
         response, response_content = self.post_request("run_query", encoded_query)
+        if 'Verified' == response_content.strip():
+            print('Verified')
+        else:
+            print('No')
+        print('total time' + str(time.time() - start))
         return Response(query, response_content.strip())
 
     def get_dataplane(self, failed_links=None):
