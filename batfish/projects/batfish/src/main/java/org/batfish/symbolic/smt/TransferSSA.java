@@ -1257,7 +1257,7 @@ class TransferSSA {
 
       } else if (stmt instanceof SetOrigin) {
         curP.debug("SetOrigin");
-        System.out.println("Warning: use of unimplemented feature SetOrigin");
+//        System.out.println("Warning: use of unimplemented feature SetOrigin");
 
       } else if (stmt instanceof SetNextHop) {
         curP.debug("SetNextHop");

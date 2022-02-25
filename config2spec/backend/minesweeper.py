@@ -79,7 +79,7 @@ class MinesweeperBackend(object):
             print('Verified')
         else:
             print('No')
-        print('total time' + str(time.time() - start))
+        print(time.time() - start)
         return Response(query, response_content.strip())
 
     def get_dataplane(self, failed_links=None):

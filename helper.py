@@ -52,6 +52,9 @@ def get_logger(name, loglevel):
 
 def init_manager(backend_path, port):
     ms_cmd = ['java', '-cp', '%s' % backend_path, 'org.batfish.backend.Backend', '%d' % port]
+    ms_cmd = ['java',
+              '-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=127.0.0.1:5005',
+              '-cp', '%s' % backend_path, 'org.batfish.backend.Backend', '%d' % port]
     print(ms_cmd)
 
     # creating minesweeper manager
