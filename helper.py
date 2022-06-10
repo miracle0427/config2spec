@@ -10,6 +10,12 @@ import subprocess
 import signal
 import socket
 
+import pandas as pd
+
+statistics = {'type':[], 'query': [], 'result': [], 'source_num' :[],
+              'count-example': [], 'down_links':[], 'count-example-num' : [],
+              'time':[], 'holds_policies': [], 'holds_not_policies': [], 'unknown_policies': [], }
+
 
 from config2spec.backend.minesweeper import MinesweeperBackend
 from config2spec.dataplane.batfish_engine import BatfishEngine
@@ -239,6 +245,19 @@ class Pipeline(object):
         # check policies with Minesweeper
         response = self.ms_manager.check_query(query)
 
+        query_str = query.to_string_representation()
+
+        if 'Type:reachability' in query_str:
+            statistics['type'].append('reachability')
+        elif 'Type:loadbalancing' in query_str:
+            statistics['type'].append('loadbalancing')
+        elif 'Type:waypoint' in query_str:
+            statistics['type'].append('waypoint')
+
+        statistics['query'].append(query_str)
+        statistics['source_num'].append(len(query.sources))
+
+
         # update policy db
         if response.all_hold():
             verified_sources = response.holds()
@@ -246,6 +265,12 @@ class Pipeline(object):
                 self.policy_db.update_policy(response.type, response.subnet, response.specifics,
                                              PolicyStatus.HOLDS, source=source)
             self.logger.debug("Verify: Satisfied - All policies hold: {}".format(num_policies))
+
+            statistics['result'].append('correct')
+            statistics['count-example'].append(None)
+            statistics['down_links'].append(None)
+            statistics['count-example-num'].append(0)
+
         else:
             failed_sources = response.holds_not()
             for source in failed_sources:
@@ -253,12 +278,34 @@ class Pipeline(object):
                                              PolicyStatus.HOLDSNOT, source=source)
             self.logger.debug("Verify: Counterexample - {} policies out of {} are violated".format(len(failed_sources),
                                                                                                    num_policies))
+            statistics['result'].append('wrong')
+            statistics['count-example'].append([str(entry) for entry in failed_sources])
+
+            downlinks = []
+            for link in response.counter_example.links.values():
+                if link.state == LinkState.DOWN:
+                    downlinks.append(link.edge)
+
+            statistics['down_links'].append([str(entry) for entry in downlinks])
+            statistics['count-example-num'].append(len(failed_sources))
+
 
         # update timing stats
         verification_time = time.time() - start_time
         verified = len(response.holds())
         violated = len(response.holds_not())
         self.verification_times.update(verification_time, verified + violated)
+
+        holds_policies = self.policy_db.num_policies(status=PolicyStatus.HOLDS)
+        holds_not_policies = self.policy_db.num_policies(status=PolicyStatus.HOLDSNOT)
+        unknown_policies = self.policy_db.num_policies(status=PolicyStatus.UNKNOWN)
+
+        statistics['time'].append(verification_time)
+        statistics['holds_policies'].append(holds_policies)
+        statistics['holds_not_policies'].append(holds_not_policies)
+        statistics['unknown_policies'].append(unknown_policies)
+
+        pd.DataFrame(statistics).to_csv('statistics.csv', index=False)
 
         return True
 
@@ -313,7 +360,7 @@ class Pipeline(object):
                     self.logger.info("Switching back to dense elimination.")
                     dense = True
 
-                success = self.sample()
+                success = self.verify()
 
             # sparse elimination - once the time needed to eliminate a policy by sampling is the same or less than
             # by verification, we switch to sparse elimination. In this mode, we decide based on an estimate of the
@@ -331,7 +378,7 @@ class Pipeline(object):
                     if not sparse_sampling:
                         self.logger.info("Sparse: Switching to Sampling")
                         sparse_sampling = True
-                    success = self.sample()
+                    success = self.verify()
 
                 # switch to verification
                 else:
@@ -354,7 +401,7 @@ class Pipeline(object):
 
         # as we are done, we need to change all the unknown policies to ones that hold
         self.policy_db.change_status(PolicyStatus.UNKNOWN, PolicyStatus.HOLDS)
-
+        pd.DataFrame(statistics).to_csv('statistics.csv', index=False)
         return
 
 
