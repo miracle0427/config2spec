@@ -305,7 +305,8 @@ class Pipeline(object):
         statistics['holds_not_policies'].append(holds_not_policies)
         statistics['unknown_policies'].append(unknown_policies)
 
-        pd.DataFrame(statistics).to_csv('statistics.csv', index=False)
+        path = os.path.dirname(self.dp_engine.fib_path)
+        pd.DataFrame(statistics).to_csv(os.path.join(path, 'statistics.csv'), index=False)
 
         return True
 
@@ -367,7 +368,8 @@ class Pipeline(object):
 
         # as we are done, we need to change all the unknown policies to ones that hold
         self.policy_db.change_status(PolicyStatus.UNKNOWN, PolicyStatus.HOLDS)
-        pd.DataFrame(statistics).to_csv('statistics.csv', index=False)
+        path = os.path.dirname(self.dp_engine.fib_path)
+        pd.DataFrame(statistics).to_csv(os.path.join(path, 'statistics.csv'), index=False)
         return
 
 
