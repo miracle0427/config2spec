@@ -310,9 +310,27 @@ class Pipeline(object):
         return True
 
     def trim(self):
+        start = time.time()
         connected_pairs = self.network.get_k_connected_routers(self.netenv.k_failures + 1)
         num_trimmed_policies = self.policy_db.trim_policies(connected_pairs)
         self.logger.debug("Trim: trimmed {} policies".format(num_trimmed_policies))
+        total = time.time() - start
+
+        holds_policies = self.policy_db.num_policies(status=PolicyStatus.HOLDS)
+        holds_not_policies = self.policy_db.num_policies(status=PolicyStatus.HOLDSNOT)
+        unknown_policies = self.policy_db.num_policies(status=PolicyStatus.UNKNOWN)
+
+        statistics['type'].append('trim')
+        statistics['query'].append(None)
+        statistics['source_num'].append(None)
+        statistics['result'].append(None)
+        statistics['count-example'].append(None)
+        statistics['down_links'].append(None)
+        statistics['count-example-num'].append(None)
+        statistics['time'].append(total)
+        statistics['holds_policies'].append(holds_policies)
+        statistics['holds_not_policies'].append(holds_not_policies)
+        statistics['unknown_policies'].append(unknown_policies)
 
     def run(self, trim_policies=False):
         self.logger.info("Start running the pipeline by computing the first sample.")
@@ -323,18 +341,8 @@ class Pipeline(object):
             self.logger.error("Dataplane sampling failed...")
             return
 
-        self.logger.info("Running a couple of queries to init the verification timer.")
-        # run enough queries to Minesweeper to match the window size of the timers
-        while not self.verification_times.full_window():
-            success = self.verify()
-
-        self.logger.info("Starting the actual loop.")
-        # start with elimination of dense violations using sampling, then decide whether to continue sampling or switch
-        # to verification depending on the expected run time.
-
-        dense = True
-        sparse_sampling = True
         num_steps = 0
+        self.trim()
         while True:
             remaining_samples = self.sampler.remaining_samples()
             remaining_policies = self.policy_db.num_policies(status=PolicyStatus.UNKNOWN)
@@ -350,49 +358,7 @@ class Pipeline(object):
             if remaining_samples == 0 or remaining_policies == 0:
                 break
 
-            # dense elimination - in the beginning we are in the dense elimination phase in which we try to quickly
-            # narrow done the policy guess by using a few dataplane samples.
-            sampling_time = self.sampling_times.mean_time_per_policy()
-            verification_time = self.verification_times.mean_time_per_policy()
-            if sampling_time <= verification_time:
-
-                if not dense:
-                    self.logger.info("Switching back to dense elimination.")
-                    dense = True
-
-                success = self.verify()
-
-            # sparse elimination - once the time needed to eliminate a policy by sampling is the same or less than
-            # by verification, we switch to sparse elimination. In this mode, we decide based on an estimate of the
-            # remaining time whether we want to continue sampling or start verifying.
-            else:
-                if dense:
-                    self.logger.info("Switching to sparse elimination.")
-                    dense = False
-
-                total_sampling_time = self.sampling_times.estimate_remaining_time(remaining_samples)
-                total_verification_time = self.verification_times.estimate_remaining_time(remaining_policies)
-
-                # stick with sampling
-                if total_sampling_time <= total_verification_time:
-                    if not sparse_sampling:
-                        self.logger.info("Sparse: Switching to Sampling")
-                        sparse_sampling = True
-                    success = self.verify()
-
-                # switch to verification
-                else:
-                    if sparse_sampling:
-                        self.logger.info("Sparse: Switching to Verification")
-                        sparse_sampling = False
-
-                    # if desired remove all policies from the guess that are physically not feasible due to the topology
-                    if trim_policies:
-                        self.logger.info("Trimming the policies.")
-                        trim_policies = False
-                        self.trim()
-                    else:
-                        success = self.verify()
+            self.verify()
 
             # check if something failed
             if not success:
