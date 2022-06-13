@@ -1,0 +1,7 @@
+type,query,result,source_num,count-example,down_links,count-example-num,time,holds_policies,holds_not_policies,unknown_policies
+trim,,,,,,,10.570046663284302,0,94111,8
+reachability,Type:reachability;IngressNodeRegex:^yemassee$|^augusta$;FinalNodeRegex:columbia;FinalIfaceRegex:FastEthernet0/0;Negate:False;MaxFailures:3;Environment:;,correct,2.0,,,0.0,184.18767547607422,2,94111,6
+reachability,Type:reachability;IngressNodeRegex:^augusta$|^columbia$;FinalNodeRegex:yemassee;FinalIfaceRegex:FastEthernet0/0;Negate:False;MaxFailures:3;Environment:;,correct,2.0,,,0.0,256.77679562568665,4,94111,4
+reachability,Type:reachability;IngressNodeRegex:^yemassee$|^columbia$;FinalNodeRegex:augusta;FinalIfaceRegex:FastEthernet0/0;Negate:False;MaxFailures:3;Environment:;,correct,2.0,,,0.0,187.305330991745,6,94111,2
+waypoint,Type:waypoint;IngressNodeRegex:^yemassee$;FinalNodeRegex:columbia;FinalIfaceRegex:FastEthernet0/0;Negate:False;MaxFailures:3;Environment:;Waypoints:nodeid85;,wrong,1.0,['yemassee'],"[""('walterboro', 'nodeid85')"", ""('troutville', 'blacksburg')"", ""('savannah', 'blitchton')""]",1.0,12.432615995407104,6,94112,1
+waypoint,Type:waypoint;IngressNodeRegex:^columbia$;FinalNodeRegex:yemassee;FinalIfaceRegex:FastEthernet0/0;Negate:False;MaxFailures:3;Environment:;Waypoints:nodeid85;,wrong,1.0,['columbia'],"[""('hartwell', 'augusta')"", ""('nodeid85', 'columbia')"", ""('tarheel', 'fayetteville')""]",1.0,12.838631629943848,6,94113,0
